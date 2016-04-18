@@ -1,15 +1,30 @@
-## Put comments here that give an overall description of what your
-## functions do
+## These function are built on the template provided in form of vectors functions
 
-## Write a short comment describing this function
+## makeCacheMatrix() contains set,get,setinverse and getinverse functions. If contents of a matrix are not changed it returns the same matrix stored in cache.
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  inverse <- NULL
+  set <- function(y) {
+    x <<- y
+    inverse <<- NULL
+  }
+  get <- function() x
+  setinverse <- function(inverse1) inverse <<- inverse1
+  getinverse <- function() inverse
+  list(set = set, get = get,
+       setinverse = setinverse,
+       getinverse = getinverse)
 }
 
-
-## Write a short comment describing this function
-
+## This function gets the matrix through getinverse function and returns inverse of the fetched matrix and stores the result through setinverse function
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  inverse <- x$getinverse()
+  if(!is.null(inverse)) {
+    message("getting cached data")
+    return(inverse)
+  }
+  data <- x$get()
+  inverse <- solve(data, ...)
+  x$setinverse(inverse)
+  inverse
 }
